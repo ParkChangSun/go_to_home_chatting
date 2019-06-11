@@ -15,9 +15,9 @@
 		<script src="script.js"></script>
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+		<!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script> -->
+		<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
     <link rel="stylesheet" type="text/css" href="style.css">
 
   </head>
@@ -71,7 +71,13 @@
           </div>
            
 			  <div class="card-footer"></div>
+			  
+			  <form id="createRoom">
+			  	<input type="text" name="roomName">
+			  	<span class="input-group-text plus_btn" id="createRoom"><i class="fas fa-plus"></i></span>
+			  </form>
 				</div></div>
+
 				<div class="col-md-8 col-xl-6 chat">
 					<div class="card">
 						<div class="card-header msg_head">
@@ -81,15 +87,16 @@
 									<span class="online_icon"></span>
                 </div>
                 
-								<div class="user_info">
+								<div class="user_info" id="chattingroomname">
                   <span>Chat with User1</span>
                   <p>_username here</p>
 									<p>1 Messages</p>
                 </div>
                 
 								<div class="video_cam">
-									<span><i class="fas fa-video"></i></span>
-									<span><i class="fas fa-phone"></i></span>
+									<button type="button" class="close" aria-label="Close">
+									<span aria-hidden="true" id="leaveRoom">&times;</span>
+								</button> 
 								</div>
               </div>
               
@@ -178,7 +185,7 @@
             
 
 						<div class="card-footer">
-							<div class="input-group">
+							<!-- <div class="input-group">
 								<div class="input-group-append">
 									<span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
                 </div>
@@ -187,7 +194,11 @@
 								<div class="input-group-append">
 									<span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
                 </div>
-							</div>
+							</div> -->
+
+							<form name="messageSend">
+						    <input id="m" autocomplete="off" /><button>Send</button>
+						  </form>
             </div>
             
 					</div>

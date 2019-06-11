@@ -8,11 +8,19 @@ var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var cors = require('cors');
 
+// var db = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'wjsn13blossoms',
+//   database: 'ttoktalk'
+// });
+
 var db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'wjsn13blossoms',
-  database: 'ttoktalk'
+  password: 'Qoswlfdlsnrn',
+  database: 'ttoktalk',
+  port: 3306
 });
 
 db.connect(function(err){
@@ -85,6 +93,12 @@ app.post('/register', function(req,res){
 //this would be in database
 var rooms = {
   "lobby": {
+    name: "lobby",
+    users: [],
+    activeUsers: [],
+  },
+  "testroom": {
+    name: "testroom",
     users: [],
     activeUsers: [],
   },
@@ -111,21 +125,25 @@ io.on('connection', function(socket){
   socket.on('messages request', function(roomName) {
     console.log('messages request')
     //testchat part must be changed with roomFrom
-    db.query(`SELECT * FROM testchat WHERE roomname ?`, [roomName], function(error, results, fields) {
-      if (results) {
-        socket.emit('messages response', results)
+    db.query(`SELECT * FROM testchat WHERE roomname=?`, [roomName], function(error, results, fields) {
+      if (error) {
+        console.log(error)
       }
+      socket.emit('messages response', results)
+      console.log(results)
     })
   })
 
 
   socket.on('roomsReloadReq', function() {
-    socket.emit('roomsReloadRes', rooms)
+    console.log('rooms reload req')
+    io.emit('roomsReloadRes', rooms)
   })
 
   socket.on('createRoomReq', function(roomName) {
-    console.log(createRoomReq)
+    console.log('createRoomReq')
     rooms[roomName] = {
+      name: roomName,
       users: [],
       activeUsers: [],
     }
@@ -134,7 +152,7 @@ io.on('connection', function(socket){
     console.log(rooms)
   })
 
-  socket.on('joinRoomReq', function(roomName) {
+  socket.on('joinRoomReq', function(roomName, user) {
     socket.join(roomName, function() {
       //database rooms.users add
       // rooms[roomName].messages.push('a user joined this room')
@@ -143,22 +161,22 @@ io.on('connection', function(socket){
           console.log('server: a user joined from room '+roomFrom, error);
         }
       })
-      io.to(roomName).emit('chat message', 'a user joined this room');
+      io.to(roomName).emit('chat message','server:'+user+ 'ajoined this room');
 
       console.log(socket.rooms)
     })
   })
 
-  socket.on('leaveRoomReq', function(roomName) {
+  socket.on('leaveRoomReq', function(roomName, user) {
     socket.leave(roomName, function() {
       //database rooms.users remove
       // rooms[roomName].messages.push('a user left this room')
       db.query(`INSERT INTO testchat (roomname, name, message) VALUES (?, ?, ?)`, [roomName, 'server', 'a user left'], function(error, results, fields) {
         if (error) {
-          console.log('server: a user left from room '+roomFrom, error);
+          console.log('server: '+user+'left from room '+roomFrom, error);
         }
       })
-      io.to(roomName).emit('chat message', 'a user left this room')
+      io.to(roomName).emit('chat message', 'server: '+user+'left from room '+roomName)
 
       if (rooms[roomName].users.length == 0) {
         console.log('there are no users in '+roomName)
@@ -168,15 +186,15 @@ io.on('connection', function(socket){
   })
 
 });
-
-server.listen(3000, function(){
+app.get('/index', function(req, res){ 
+  res.render('index.html');
+});
+server.listen(7001, function(){
 	console.log('Connected 3000');
 });
 
-//legacy renderers
-// app.get('/index', function(req, res){ 
-//   res.render('index.html');
-// });
+// legacy renderers
+
 
 // app.get('/register', function(req, res){
 //   res.render('register.html');

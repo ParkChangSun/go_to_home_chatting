@@ -8,20 +8,20 @@ var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var cors = require('cors');
 
-// var db = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   password: 'wjsn13blossoms',
-//   database: 'ttoktalk'
-// });
-
 var db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'Qoswlfdlsnrn',
-  database: 'ttoktalk',
-  port: 3306
+  password: 'wjsn13blossoms',
+  database: 'ttoktalk'
 });
+
+// var db = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'Qoswlfdlsnrn',
+//   database: 'ttoktalk',
+//   port: 3306
+// });
 
 db.connect(function(err){
   if(err){
@@ -158,7 +158,7 @@ io.on('connection', function(socket){
       // rooms[roomName].messages.push('a user joined this room')
       db.query(`INSERT INTO testchat (roomname, name, message) VALUES (?, ?, ?)`, [roomName, 'server', 'a user joined'], function(error, results, fields) {
         if (error) {
-          console.log('server: a user joined from room '+roomFrom, error);
+          console.log('server: '+user+' joined from room '+roomFrom, error);
         }
       })
       io.to(roomName).emit('chat message','server:'+user+ 'ajoined this room');
@@ -189,8 +189,9 @@ io.on('connection', function(socket){
 app.get('/index', function(req, res){ 
   res.render('index.html');
 });
-server.listen(7001, function(){
-	console.log('Connected 3000');
+
+server.listen(3000, function(){
+	console.log('Connected');
 });
 
 // legacy renderers

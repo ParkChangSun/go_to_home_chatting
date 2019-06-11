@@ -78,7 +78,7 @@ $(document).ready(function() {
 		// }
 		// d.removeAttr('id style')
 		// $('.msg_card_body').append($(d));
-		$('.msg_card_body').append($('<li>').text(userName+":"+msg));
+		$('.msg_card_body').append('<li class="home">'+userName+":"+msg+'</li>');
 	})
 
 
@@ -100,7 +100,8 @@ $(document).ready(function() {
 		// 	d.removeAttr('id style')
 		// }
 		for (var i = 0; i < messages.length; i++) {
-			$('.msg_card_body').append($('<li>').text(messages[i].message))
+			$('.msg_card_body').append('<li class="home">'+messages[i].name+':'+messages[i].message+'</li>')
+
 		}
 	})
 })
